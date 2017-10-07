@@ -11,7 +11,9 @@ import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 
 public class HttpApplication extends AbstractVerticle {
 
-  protected static final String template = "This is a test, %s!";
+  protected static final String templateHello = "Hola, %s!";
+  protected static final String templateGoodbye = "Hasta, %s!";
+  protected static final String templateTest = "This is a test, %s";
 
   @Override
   public void start(Future<Void> future) {
@@ -19,6 +21,10 @@ public class HttpApplication extends AbstractVerticle {
     Router router = Router.router(vertx);
 
     router.get("/api/greeting").handler(this::greeting);
+    router.get("/api/goodbye").handler(this::goodbye);
+    router.get("/api/test").handler(this::test);
+    
+    
     router.get("/*").handler(StaticHandler.create());
 
     // Create the HTTP server and pass the "accept" method to the request handler.
@@ -43,7 +49,35 @@ public class HttpApplication extends AbstractVerticle {
     }
 
     JsonObject response = new JsonObject()
-        .put("content", String.format(template, name));
+        .put("content", String.format(templateHello, name));
+
+    rc.response()
+        .putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
+        .end(response.encodePrettily());
+  }
+  
+  private void goodbye(RoutingContext rc) {
+    String name = rc.request().getParam("name");
+    if (name == null) {
+      name = "World";
+    }
+
+    JsonObject response = new JsonObject()
+        .put("content", String.format(templateGoodbye, name));
+
+    rc.response()
+        .putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
+        .end(response.encodePrettily());
+  }
+  
+    private void test(RoutingContext rc) {
+    String name = rc.request().getParam("test");
+    if (name == null) {
+      name = "World";
+    }
+
+    JsonObject response = new JsonObject()
+        .put("content", String.format(templateTest, name));
 
     rc.response()
         .putHeader(CONTENT_TYPE, "application/json; charset=utf-8")

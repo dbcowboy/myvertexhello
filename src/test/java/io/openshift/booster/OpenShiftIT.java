@@ -1,6 +1,7 @@
 package io.openshift.booster;
 
 import io.openshift.booster.test.OpenShiftTestAssistant;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.jayway.awaitility.Awaitility.await;
 import static com.jayway.restassured.RestAssured.get;
-import static io.openshift.booster.HttpApplication.template;
+import static io.openshift.booster.HttpApplication.templateHello;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -46,8 +47,8 @@ public class OpenShiftIT {
 
     @Test
     public void testThatWeServeAsExpected() throws MalformedURLException {
-        get("/api/greeting").then().body("content", equalTo(String.format(template, "World")));
-        get("/api/greeting?name=vert.x").then().body("content", equalTo(String.format(template, "vert.x")));
+        get("/api/greeting").then().body("content", equalTo(String.format(templateHello, "World")));
+        get("/api/greeting?name=vert.x").then().body("content", equalTo(String.format(templateHello, "vert.x")));
     }
 
 }

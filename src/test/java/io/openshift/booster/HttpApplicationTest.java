@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static io.openshift.booster.HttpApplication.template;
+import static io.openshift.booster.HttpApplication.templateHello;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(VertxUnitRunner.class)
@@ -41,7 +41,7 @@ public class HttpApplicationTest {
                 context.assertTrue(resp.succeeded());
                 context.assertEquals(resp.result().statusCode(), 200);
                 String content = resp.result().bodyAsJsonObject().getString("content");
-                context.assertEquals(content, String.format(template, "World"));
+                context.assertEquals(content, String.format(templateHello, "World"));
                 async.complete();
             });
     }
@@ -55,7 +55,7 @@ public class HttpApplicationTest {
                 context.assertTrue(resp.succeeded());
                 context.assertEquals(resp.result().statusCode(), 200);
                 String content = resp.result().bodyAsJsonObject().getString("content");
-                context.assertEquals(content, String.format(template, "Charles"));
+                context.assertEquals(content, String.format(templateHello, "Charles"));
                 async.complete();
             });
     }
